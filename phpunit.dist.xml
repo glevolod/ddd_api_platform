@@ -14,13 +14,23 @@
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
+        <env name="APP_DEBUG" value="1"/>
         <server name="SHELL_VERBOSITY" value="-1" />
+
+        <!-- test DB -->
+        <env name="DATABASE_URL" value="sqlite:///%kernel.project_dir%/var/test.db"/>
     </php>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
         </testsuite>
+<!--        <testsuite name="Integration">-->
+<!--            <directory>tests/Integration</directory>-->
+<!--        </testsuite>-->
+<!--        <testsuite name="Application">-->
+<!--            <directory>tests/Application</directory>-->
+<!--        </testsuite>-->
     </testsuites>
 
     <source ignoreSuppressionOfDeprecations="true"
@@ -38,6 +48,10 @@
             <function>trigger_deprecation</function>
         </deprecationTrigger>
     </source>
+
+    <logging>
+        <junit outputFile="var/logs/phpunit.xml"/>
+    </logging>
 
     <extensions>
     </extensions>
