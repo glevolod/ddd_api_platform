@@ -21,10 +21,11 @@ final class Task
     ) {
     }
 
-    public static function create(TaskId $id, TaskTitle $title): self
+    public static function create(TaskTitle $title): self
     {
+        $id = TaskId::create();
         $task = new self($id, $title);
-        $task->recordEvent(new TaskCreated($id, (string)$title));
+        $task->recordEvent(new TaskCreated($id, $title));
         return $task;
     }
 
@@ -38,6 +39,11 @@ final class Task
         $this->status = $newStatus;
 
         $this->recordEvent(new TaskStatusChanged($this->id, $oldStatus, $newStatus));
+    }
+
+    public function markAsDone(): void
+    {
+        $this->changeStatus(new TaskStatus(TaskStatus::DONE));
     }
 
     public function getId(): TaskId
@@ -66,7 +72,7 @@ final class Task
         $this->domainEvents[] = $event;
     }
 
-    public function clearDomainEvents(): void
+    public function clearEvents(): void
     {
         $this->domainEvents = [];
     }

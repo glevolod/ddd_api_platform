@@ -15,22 +15,21 @@ class TaskTest extends TestCase
 {
     public function testCreateTask(): void
     {
-        $id = TaskId::create();
         $title = new TaskTitle('Implement DDD');
-        $task = Task::create($id, $title);
+        $task = Task::create($title);
 
         self::assertSame('Implement DDD', (string)$task->getTitle());
         self::assertSame('new', (string)$task->getStatus());
 
         $events = $task->releaseEvents();
         self::assertCount(1, $events);
-        self::assertSame($id->toString(), $events[0]->id->toString());
+        self::assertSame($task->getId()->toString(), $events[0]->id->toString());
     }
 
     public function testChangeStatusEmitsEvent(): void
     {
-        $task = Task::create(TaskId::create(), new TaskTitle('Learn CQRS'));
-        $task->clearDomainEvents();
+        $task = Task::create(new TaskTitle('Learn CQRS'));
+        $task->clearEvents();
 
         $task->changeStatus(new TaskStatus(TaskStatus::IN_PROGRESS));
 
