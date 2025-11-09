@@ -62,7 +62,7 @@ final class Task
     }
 
     /** @return object[] */
-    public function getDomainEvents(): array
+    public function getEvents(): array
     {
         return $this->domainEvents;
     }
